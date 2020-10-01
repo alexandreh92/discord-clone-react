@@ -5,11 +5,12 @@ import { Container, HashtagIcon, InviteIcon, SettingsIcon } from './styles';
 interface Props {
   channelName: string;
   selected?: boolean;
+  onClick?: () => void;
 }
 
-const ChannelButton: React.FC<Props> = ({ channelName, selected }) => {
+const ChannelButton: React.FC<Props> = ({ channelName, selected, onClick }) => {
   return (
-    <Container className={selected ? 'active' : ''}>
+    <Container className={selected ? 'active' : ''} onClick={onClick}>
       <div>
         <HashtagIcon />
         <span>{channelName}</span>

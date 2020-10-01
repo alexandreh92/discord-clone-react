@@ -5,7 +5,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 export default (reducers: any) => {
   const persistedReducer = persistReducer(
     {
-      key: 'scalAppMOBILE',
+      key: 'discordClone',
       storage: storage,
       whitelist: ['auth', 'user'],
       stateReconciler: autoMergeLevel2,
