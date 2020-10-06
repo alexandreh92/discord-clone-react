@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { RoomRequest } from '~/@types';
 import RoomsActions from '~/store/ducks/rooms';
+import MessagesActions from '~/store/ducks/messages';
 
 import cable from '~/services/cable';
 
@@ -11,7 +12,8 @@ import ChannelButton from '~/components/ChannelButton';
 import { Container, Category, AddCategoryIcon } from './styles';
 import { ApplicationState } from '~/store/ducks/types';
 
-const { getRoomsRequest, addMessage, setDefaultRoom } = RoomsActions;
+const { getRoomsRequest, setDefaultRoom } = RoomsActions;
+const { addMessage } = MessagesActions;
 
 const ChannelList: React.FC = () => {
   /* Hooks */
@@ -31,18 +33,17 @@ const ChannelList: React.FC = () => {
         { channel: 'RoomsChannel', room: r.id },
         {
           received({ event, data }: RoomRequest) {
-            console.log(event, data);
-            if (event === 'create') dispatch(addMessage(data));
+            if (event === 'create') dispatch(addMessage(data, r.id));
           },
         }
       );
     });
     return () => {
-      subscriptions.map((subscription) =>
-        cable.subscriptions.remove(subscription)
-      );
+      subscriptions.map((subscription) => {
+        return cable.subscriptions.remove(subscription);
+      });
     };
-  }, [dispatch, rooms]);
+  }, [rooms, dispatch]);
 
   useEffect(() => {
     dispatch(getRoomsRequest());

@@ -1,8 +1,12 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { RoomRequest } from '~/@types';
+
 import ChannelMessage, { Mention } from '~/components/ChannelMessage';
 import { ApplicationState } from '~/store/ducks/types';
+
+import cable from '~/services/cable';
 
 import RoomActions from '~/store/ducks/rooms';
 
@@ -16,7 +20,10 @@ const ChannelData: React.FC = () => {
   const [content, setContent] = useState('');
   const messagesRef = useRef<HTMLDivElement>(null);
   const { currentRoom } = useSelector((state: ApplicationState) => state.rooms);
-  const { messages } = currentRoom;
+  const message_room = useSelector((state: ApplicationState) =>
+    state.messages.rooms.find((i) => i.room_id === currentRoom.id)
+  );
+  // const messages = currentRoom?.messages;
 
   /* Effects */
 
@@ -26,7 +33,7 @@ const ChannelData: React.FC = () => {
     if (div) {
       div.scrollTop = div.scrollHeight;
     }
-  }, [messages]);
+  }, [message_room]);
 
   /* Callbacks */
 
@@ -46,7 +53,7 @@ const ChannelData: React.FC = () => {
   return (
     <Container>
       <Messages ref={messagesRef}>
-        {messages?.map((message) => (
+        {message_room?.messages?.map((message) => (
           <ChannelMessage
             key={message.id}
             author={message.user.username}

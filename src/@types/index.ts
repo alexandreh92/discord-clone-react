@@ -18,6 +18,11 @@ export interface Message {
   user: MessageUser;
 }
 
+export interface RoomMessages {
+  room_id: number;
+  messages: Message[];
+}
+
 export interface Room {
   id: number;
   name: string;

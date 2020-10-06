@@ -1,10 +1,9 @@
 import { all, AllEffect, ForkEffect } from 'redux-saga/effects';
 
-/* Types */
-
 /* Sagas */
 
 import AuthSagas from './auth/sagas';
+import MessagesSagas from './messages/sagas';
 import ServersSagas from './servers/sagas';
 import RoomsSagas from './rooms/sagas';
 
@@ -13,5 +12,10 @@ export default function* rootSaga(): Generator<
   any,
   unknown
 > {
-  return yield all([...AuthSagas, ...ServersSagas, ...RoomsSagas]);
+  return yield all([
+    ...AuthSagas,
+    ...ServersSagas,
+    ...RoomsSagas,
+    ...MessagesSagas,
+  ]);
 }
